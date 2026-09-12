@@ -183,7 +183,8 @@ function start(){
  function closeCard(restore=true){$('planet-card').classList.remove('open');$('planet-card').inert=true;document.body.classList.remove('drawer-open');document.querySelectorAll('.planet-choice').forEach(b=>b.classList.remove('active'));labels.forEach(b=>b.classList.remove('selected'));planetObjects.forEach(obj=>{obj.line.material.opacity=.22;obj.line.material.color.set(0x58718a);});if(restore&&selected>=0)document.querySelectorAll('.planet-choice')[selected].focus();selected=-1;}
  function setSpeed(value){speed=value;if(value>0)lastSpeed=value;document.querySelectorAll('[data-speed]').forEach(b=>{const on=Number(b.dataset.speed)===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on);});}
  function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2500);}
- // The score is synthesized once in memory; the live context plays only one score at a time.
+ const tourDurations=[5,8,11],tourLoopDuration=tourDurations.reduce((sum,duration)=>sum+duration,0);
+ // The score is synthesized once in memory; one live source loops until the user exits.
  function createTourAudio(){
   const preferenceKey='cosmos.tourMusic.muted.v1';
   let muted=false,context=null,analyser=null,scorePromise=null,score=null,revision=0;
@@ -209,7 +210,7 @@ function start(){
   }
   async function synthesizeScore(){
    const Offline=window.OfflineAudioContext||window.webkitOfflineAudioContext;
-   const sampleRate=44100,duration=25.5,offline=new Offline(2,Math.ceil(duration*sampleRate),sampleRate);
+   const sampleRate=44100,duration=tourLoopDuration*2+3,offline=new Offline(2,Math.ceil(duration*sampleRate),sampleRate);
    const mix=offline.createGain(),warmth=offline.createBiquadFilter(),compressor=offline.createDynamicsCompressor();
    mix.gain.value=.82;warmth.type='lowpass';warmth.frequency.value=2800;warmth.Q.value=.3;
    compressor.threshold.value=-19;compressor.knee.value=18;compressor.ratio.value=2;compressor.attack.value=.025;compressor.release.value=.3;
@@ -231,17 +232,23 @@ function start(){
    }
    // Cmaj7 → Am7 → Fmaj7 → Cadd9: gentle transitions at the three camera stages.
    const chords=[{t:0,len:7,notes:[48,55,59,64]},{t:5,len:10,notes:[45,52,55,60]},{t:13,len:9,notes:[41,48,52,57]},{t:20,len:5.45,notes:[48,55,62,64]}];
-   chords.forEach(({t,len,notes})=>notes.forEach((midi,i)=>{
-    tone({midi,start:t,length:len,level:.034,pan:(i-1.5)*.36,attack:1.65,release:2.15,detune:i%2?3:-3});
-    tone({midi:midi+12,start:t+.035,length:len-.04,level:.007,pan:(1.5-i)*.3,attack:2,release:2.1,type:'triangle',detune:i%2?-4:4});
-   }));
    const chimes=[[1.8,76],[4,79],[6.7,76],[9.4,72],[11.7,79],[14.6,77],[17.2,81],[19.5,76],[22,74],[23.4,76]];
-   chimes.forEach(([start,midi],i)=>{
-    const pan=Math.sin(i*2.4)*.55;
-    tone({midi,start,length:2.7,level:.055,pan,attack:.026,bell:true});
-    tone({midi:midi+12,start,length:1.45,level:.009,pan,attack:.016,bell:true,detune:2});
-   });
-   const rendered=await offline.startRendering();
+   for(let cycle=0;cycle<2;cycle++){
+    const offset=cycle*tourLoopDuration;
+    chords.forEach(({t,len,notes})=>notes.forEach((midi,i)=>{
+     tone({midi,start:offset+t,length:len,level:.034,pan:(i-1.5)*.36,attack:1.65,release:2.15,detune:i%2?3:-3});
+     tone({midi:midi+12,start:offset+t+.035,length:len-.04,level:.007,pan:(1.5-i)*.3,attack:2,release:2.1,type:'triangle',detune:i%2?-4:4});
+    }));
+    chimes.forEach(([start,midi],i)=>{
+     const pan=Math.sin(i*2.4)*.55;
+     tone({midi,start:offset+start,length:2.7,level:.055,pan,attack:.026,bell:true});
+     tone({midi:midi+12,start:offset+start,length:1.45,level:.009,pan,attack:.016,bell:true,detune:2});
+    });
+   }
+   const fullScore=await offline.startRendering(),loopFrames=Math.round(tourLoopDuration*sampleRate);
+   const rendered=offline.createBuffer(2,loopFrames,sampleRate);
+   // The first pass warms the effects; the second starts with the preceding reverb tail.
+   for(let ch=0;ch<2;ch++)rendered.copyToChannel(fullScore.getChannelData(ch).subarray(loopFrames,loopFrames*2),ch);
    let peak=0;for(let ch=0;ch<2;ch++){const data=rendered.getChannelData(ch);for(let i=0;i<data.length;i++)peak=Math.max(peak,Math.abs(data[i]));}
    // Leave generous headroom. This also protects against implementation differences between browsers.
    if(peak>.25){const scale=.25/peak;for(let ch=0;ch<2;ch++){const data=rendered.getChannelData(ch);for(let i=0;i<data.length;i++)data[i]*=scale;}}
@@ -275,9 +282,10 @@ function start(){
     if(ctx.state!=='running')throw new Error('Audio is suspended');
     // Any previous fade finishes before the replacement source starts, so rapid clicks cannot stack music.
     voices.forEach(voice=>retire(voice,.025));
-    const delay=voices.size?.04:0,offset=Math.min(progress()+delay,buffer.duration-.02);
+    const delay=voices.size?.04:0,offset=(progress()+delay)%tourLoopDuration;
     const node=ctx.createBufferSource(),gain=ctx.createGain(),when=ctx.currentTime+delay;
-    node.buffer=buffer;gain.gain.setValueAtTime(0,ctx.currentTime);gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(1,when+.65);
+    node.buffer=buffer;node.loop=true;node.loopStart=0;node.loopEnd=tourLoopDuration;
+    gain.gain.setValueAtTime(0,ctx.currentTime);gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(1,when+.65);
     node.connect(gain);gain.connect(analyser);
     const voice={node,gain,offset,startedAt:when,retiring:false};voices.add(voice);
     node.onended=()=>{node.disconnect();gain.disconnect();voices.delete(voice);};
@@ -302,7 +310,7 @@ function start(){
   function snapshot(){
    let rms=0;if(analyser&&context.state==='running'){analyser.getFloatTimeDomainData(meter);for(const sample of meter)rms+=sample*sample;rms=Math.sqrt(rms/meter.length);}
    const playing=[...voices].filter(voice=>!voice.retiring&&context.currentTime>=voice.startedAt);
-   return {muted,available:!unavailable,failed,contextState:context?.state??'not-created',bufferReady:!!score,activeSources:playing.length,retiringSources:voices.size-playing.length,rms,lastOffset,position:playing.length?playing[0].offset+context.currentTime-playing[0].startedAt:null};
+   return {muted,available:!unavailable,failed,contextState:context?.state??'not-created',bufferReady:!!score,activeSources:playing.length,retiringSources:voices.size-playing.length,rms,lastOffset,position:playing.length?(playing[0].offset+context.currentTime-playing[0].startedAt)%tourLoopDuration:null};
   }
   updateButton();
   return {sync,stop,toggle,visibility,leave,returnToPage,snapshot};
@@ -315,7 +323,7 @@ function start(){
  function pose(position,target){const c=new THREE.PerspectiveCamera();c.position.copy(position);c.lookAt(target);return c.quaternion.clone();}
  const tourTop=new THREE.Vector3(0,137,.1),tourSide=new THREE.Vector3(0,7,116),armR=39,armAngle=2.15*Math.log(armR/5)+Math.PI/2;
  const tourArm=new THREE.Vector3(Math.cos(armAngle)*armR,1.8,Math.sin(armAngle)*armR),tourArmLook=new THREE.Vector3(Math.cos(armAngle+.18)*(armR+4),.4,Math.sin(armAngle+.18)*(armR+4));
- const tourPos=[tourTop,tourSide,tourArm],tourQuat=[pose(tourTop,new THREE.Vector3()),pose(tourSide,new THREE.Vector3()),pose(tourArm,tourArmLook)],tourDurations=[5,8,11];
+ const tourPos=[tourTop,tourSide,tourArm],tourQuat=[pose(tourTop,new THREE.Vector3()),pose(tourSide,new THREE.Vector3()),pose(tourArm,tourArmLook)];
  function animateTour(dt){
   if(!tour)return;
   // Music runs on real elapsed seconds. Keep visible camera time on the same clock,
@@ -323,15 +331,14 @@ function start(){
   tour.elapsed+=dt;
   while(tour.elapsed>=tourDurations[tour.stage]){
    tour.elapsed-=tourDurations[tour.stage];camera.position.copy(tourPos[tour.stage]);camera.quaternion.copy(tourQuat[tour.stage]);
-   if(tour.stage===2){endTour();toast('巡游结束，继续自由探索');return;}
-   tour.stage++;tour.startPos.copy(camera.position);tour.startQuat.copy(camera.quaternion);updateTourUI();
+   tour.stage=(tour.stage+1)%tourPos.length;tour.startPos.copy(camera.position);tour.startQuat.copy(camera.quaternion);updateTourUI();
   }
   const t=tour.elapsed/tourDurations[tour.stage],e=t*t*(3-2*t);
   camera.position.lerpVectors(tour.startPos,tourPos[tour.stage],e);camera.quaternion.slerpQuaternions(tour.startQuat,tourQuat[tour.stage],e);
  }
  function stopTourOnInput(){if(tour)endTour();}
  function zoom(amount){if(active==='galaxy'){stopTourOnInput();camera.getWorldDirection(v);camera.position.addScaledVector(v,-amount*.024*fly.speed);}else{orbit.radius=THREE.MathUtils.clamp(orbit.radius*Math.exp(amount*.0012),orbit.min,orbit.max);setOrbitCamera();}}
- function showAbout(){previousFocus=document.activeElement;const text=active==='solar'?`<p>1x 下，1 秒推进约 12 个地球日。八颗行星按真实公转周期的比例运动：离太阳越近，公转越快。</p><p>行星尺寸与轨道间距采用展示比例；轨道简化为圆形。自转单独压缩时间以便看清纹理，保留逆行方向；月球公转采用 27.3217 日恒星周期。</p><p>资料中的自转是恒星自转周期，并非太阳日。木星、土星等没有固体表面，其自转采用约定的参考值。</p><a href="https://ssd.jpl.nasa.gov/planets/phys_par.html" target="_blank" rel="noopener noreferrer">JPL 行星资料 ↗</a> · <a href="https://ssd.jpl.nasa.gov/sats/discovery.html" target="_blank" rel="noopener noreferrer">JPL 卫星记录 ↗</a>`:active==='galaxy'?`<p>132,000 颗恒星通过 GPU Points 绘制。四条对数螺旋臂、中央核球和弥散盘共同组成这个银河系示意模型。</p><p>恒星颜色按约 3,000–30,000 K 的黑体色温生成，暗色粒子形成尘埃带。这是程序化模型，数量与位置不对应真实恒星目录。</p><p>拖拽环顾，W / S 前后、A / D 左右，Q / E 降低与升高，Shift 加速。滚轮也可前后移动。巡游依次经过俯瞰、侧视和旋臂内部；手动操作会接管相机。</p><p>巡游时播放内嵌合成的太空氛围音乐，可点击“音乐开启／已静音”切换并记住选择。停止巡游或切换场景时音乐淡出；页面隐藏时暂停，返回后从当前巡游进度恢复。顶部时间倍速不影响相机巡游与配乐。</p>`:`<p>背景星空先绘制为一张 GPU 纹理，再用屏幕空间径向映射表现引力弯折与光子环。旋转视角时，背景星光会沿新的方向弯曲。</p><p>吸积盘有真实三维厚度，内薄外厚；盘面纹理按半径差速旋转。多普勒亮度由气流速度与观察方向的夹角计算：朝观察者运动的盘面一侧更亮。</p><p>这是供探索的实时视觉近似，未求解广义相对论光线轨迹，也未模拟吸积盘的多重像，不用于科研计算。</p>`;$('about-content').innerHTML=text;$('about-dialog').hidden=false;keys.clear();$('close-about').focus();}
+ function showAbout(){previousFocus=document.activeElement;const text=active==='solar'?`<p>1x 下，1 秒推进约 12 个地球日。八颗行星按真实公转周期的比例运动：离太阳越近，公转越快。</p><p>行星尺寸与轨道间距采用展示比例；轨道简化为圆形。自转单独压缩时间以便看清纹理，保留逆行方向；月球公转采用 27.3217 日恒星周期。</p><p>资料中的自转是恒星自转周期，并非太阳日。木星、土星等没有固体表面，其自转采用约定的参考值。</p><a href="https://ssd.jpl.nasa.gov/planets/phys_par.html" target="_blank" rel="noopener noreferrer">JPL 行星资料 ↗</a> · <a href="https://ssd.jpl.nasa.gov/sats/discovery.html" target="_blank" rel="noopener noreferrer">JPL 卫星记录 ↗</a>`:active==='galaxy'?`<p>132,000 颗恒星通过 GPU Points 绘制。四条对数螺旋臂、中央核球和弥散盘共同组成这个银河系示意模型。</p><p>恒星颜色按约 3,000–30,000 K 的黑体色温生成，暗色粒子形成尘埃带。这是程序化模型，数量与位置不对应真实恒星目录。</p><p>拖拽环顾，W / S 前后、A / D 左右，Q / E 降低与升高，Shift 加速。滚轮也可前后移动。巡游按俯瞰（5 秒）、侧视（8 秒）、旋臂内部（11 秒）持续循环，每轮约 24 秒；下一轮平滑飞回俯瞰，手动操作会接管相机并退出巡游。</p><p>巡游时连续循环播放内嵌合成的太空氛围音乐，换轮时自然衔接；可点击“音乐开启／已静音”切换并记住选择。停止巡游或切换场景时音乐淡出；页面隐藏时暂停，返回后从当前巡游进度恢复。顶部时间倍速不影响相机巡游与配乐。</p>`:`<p>背景星空先绘制为一张 GPU 纹理，再用屏幕空间径向映射表现引力弯折与光子环。旋转视角时，背景星光会沿新的方向弯曲。</p><p>吸积盘有真实三维厚度，内薄外厚；盘面纹理按半径差速旋转。多普勒亮度由气流速度与观察方向的夹角计算：朝观察者运动的盘面一侧更亮。</p><p>这是供探索的实时视觉近似，未求解广义相对论光线轨迹，也未模拟吸积盘的多重像，不用于科研计算。</p>`;$('about-content').innerHTML=text;$('about-dialog').hidden=false;keys.clear();$('close-about').focus();}
  function closeAbout(){if(!$('about-dialog').hidden){$('about-dialog').hidden=true;if(previousFocus?.isConnected)previousFocus.focus();}}
  document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>setScene(b.dataset.scene)));
  document.querySelectorAll('[data-speed]').forEach(b=>b.addEventListener('click',()=>setSpeed(Number(b.dataset.speed))));
