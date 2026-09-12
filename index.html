@@ -22,6 +22,8 @@
 @media(max-width:1150px){.topbar{padding:0 22px;gap:12px}.brand{min-width:180px}.brand-word{font-size:16px;letter-spacing:3px}.time-control{min-width:160px}.tab{padding:0 15px}.tabs{gap:3px}.time-label{display:none}.scene-info{left:30px;top:117px}h1{font-size:39px}.scene-caption{left:30px}.planet-choice{min-width:67px;padding:9px}.drawer{width:325px}.drawer-open .view-tools{right:342px}.drawer-open .context-tools{right:340px}.drawer-open .planet-dock{margin-left:-120px}.bottom-right{display:none}.bottom-bar{padding:0 22px}}
 @media(max-width:780px){.topbar{height:117px;align-items:flex-start;padding-top:16px;flex-wrap:wrap;gap:0;justify-content:space-between}.brand{min-width:0}.brand svg{height:30px;width:30px}.brand-sub{font-size:10px;letter-spacing:2px}.brand-word{font-size:14px}.time-control{min-width:0}.tabs{position:absolute;top:65px;height:52px;left:20px;right:20px;justify-content:space-around}.tab{font-size:13px;padding:0 12px;gap:8px}.scene-info{top:143px;left:23px;max-width:290px}.eyebrow{font-size:10px;letter-spacing:2px}h1{font-size:32px;margin:12px 0;letter-spacing:5px}.description{font-size:12px;max-width:240px}.scene-facts{gap:17px;margin-top:20px}.scene-facts>div{padding-right:17px}.fact-value{font-size:19px}.fact-label{font-size:10px}.context-tools{right:18px;top:141px;flex-direction:column;gap:14px;align-items:flex-end;font-size:11px}.context-tools .labels-toggle{display:none}.small-button{padding:8px;font-size:11px}.scene-caption{left:22px;bottom:163px;max-width:260px}.caption-line{font-size:10px}.planet-dock{bottom:53px;left:13px;right:13px;transform:none;overflow-x:auto;padding:9px 6px;gap:0;width:auto;scrollbar-width:thin}.planet-choice{min-width:58px;flex:1;font-size:11px;padding:10px 7px;gap:7px}.planet-choice .en{font-size:8px;letter-spacing:0}.dock-number{font-size:8px}.view-tools{right:18px;bottom:164px}.icon-button{width:34px;height:34px}.bottom-help{gap:12px;font-size:10px}.bottom-help span:last-child{display:none}.performance{min-width:0}.bottom-bar{padding:0 17px}.bottom-bar #resolution{display:none}.drawer{top:117px;width:min(340px,100%);padding:22px;bottom:38px}.drawer-open .context-tools{opacity:0;pointer-events:none}.drawer-open .view-tools{right:18px;opacity:0;pointer-events:none}.drawer-open .planet-dock{margin-left:0;opacity:0;pointer-events:none}.drawer-open .scene-info{opacity:.2}.planet-id{font-size:43px;margin-top:15px}.drawer h2{font-size:29px}.planet-type{margin-top:15px}.planet-summary{margin-bottom:18px}.planet-data>div{padding:12px 0}.flight-panel{max-width:240px;gap:11px}.tour-button{padding:10px 12px;font-size:12px}.tour-steps{gap:11px;font-size:10px}.keys{font-size:10px}.temperature{font-size:10px;margin-top:10px}.temperature-bar{width:65px}.toast{font-size:12px;bottom:152px;max-width:85vw;width:max-content}}
 @media(max-height:650px){.scene-facts{display:none}.scene-caption{bottom:152px}.planet-id{display:none}.drawer h2{margin-top:20px}.planet-summary{margin-bottom:15px}.drawer .source-note{margin-top:10px}.scene-info h1{font-size:32px}.description{font-size:12px}}
+.tour-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:410px}.music-button{display:flex;align-items:center;gap:7px;min-height:44px;padding:10px 12px;border:1px solid rgba(var(--accent-rgb),.25);border-radius:6px;background:rgba(var(--accent-rgb),.055);color:var(--accent);white-space:nowrap;font-size:12px}.music-button svg{width:17px;height:17px}.music-button[aria-pressed="false"]{color:var(--muted);border-color:var(--line);background:#0b111b80}.music-button .sound-off{display:none}.music-button[aria-pressed="false"] .sound-on{display:none}.music-button[aria-pressed="false"] .sound-off{display:block}.music-button:disabled{opacity:.65;cursor:not-allowed}
+@media(max-width:780px){.tour-actions{gap:7px;max-width:290px}.flight-panel{max-width:290px}.tour-actions .tour-button{padding:10px;font-size:11px;gap:7px;min-height:39px}.music-button{padding:9px 8px;font-size:11px;min-height:39px;gap:5px}.music-button svg{width:15px;height:15px}}
 @media(prefers-reduced-motion:reduce){.drawer,.toast{transition:none}.loading-orbit{animation:none}}
 </style>
 </head>
@@ -40,7 +42,7 @@
 <section class="scene-info" aria-live="polite"><div class="eyebrow" id="scene-kicker">01 / SOLAR SYSTEM</div><h1 id="scene-title">太阳系</h1><p class="description" id="scene-description">一颗恒星，八个世界。<br>沿着引力的轨迹，探索我们的宇宙邻居。</p><div class="scene-facts" id="scene-facts"><div><div class="fact-value">8<small>颗</small></div><div class="fact-label">行星</div></div><div><div class="fact-value">46<small>亿年</small></div><div class="fact-label">大约年龄</div></div><div><div class="fact-value">1<small>AU</small></div><div class="fact-label">日地平均距离</div></div></div></section>
 <div class="context-tools"><label class="switch-label" id="orbit-control"><input id="orbits" type="checkbox" checked>轨道线</label><label class="switch-label labels-toggle" id="label-control"><input id="show-labels" type="checkbox" checked>名称</label><button class="small-button" id="about-button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.2"/></svg>观测说明</button></div>
 <div id="labels"></div>
-<div class="scene-caption"><div class="flight-panel" id="flight-panel" hidden><button id="tour-button" class="tour-button"><svg viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></svg><span>开始星际巡游</span></button><div class="tour-steps"><span data-stage="0">01 俯瞰</span><span data-stage="1">02 侧视</span><span data-stage="2">03 穿入旋臂</span></div><div class="keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 飞行 &nbsp;<kbd>Q</kbd><kbd>E</kbd> 升降<br><kbd>Shift</kbd> 加速 · 拖拽环顾 · 滚轮前进</div><div class="temperature"><span>3,000 K</span><div class="temperature-bar"></div><span>30,000 K</span></div></div><div class="caption-line" id="caption"><strong>点击一颗行星</strong>，读取它的故事。<br>距离与大小经过缩放，以便观察。</div></div>
+<div class="scene-caption"><div class="flight-panel" id="flight-panel" hidden><div class="tour-actions"><button id="tour-button" class="tour-button"><svg viewBox="0 0 24 24"><path d="m9 5 11 7-11 7Z"/></svg><span>开始星际巡游</span></button><button id="music-toggle" class="music-button" aria-pressed="true" aria-label="巡游音乐已开启，点击静音" title="仅在银河自动巡游期间播放，记住你的选择"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z"/><g class="sound-on"><path d="M17 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></g><g class="sound-off"><path d="m17 9 5 6m0-6-5 6"/></g></svg><span>音乐开启</span></button></div><div class="tour-steps"><span data-stage="0">01 俯瞰</span><span data-stage="1">02 侧视</span><span data-stage="2">03 穿入旋臂</span></div><div class="keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 飞行 &nbsp;<kbd>Q</kbd><kbd>E</kbd> 升降<br><kbd>Shift</kbd> 加速 · 拖拽环顾 · 滚轮前进</div><div class="temperature"><span>3,000 K</span><div class="temperature-bar"></div><span>30,000 K</span></div></div><div class="caption-line" id="caption"><strong>点击一颗行星</strong>，读取它的故事。<br>距离与大小经过缩放，以便观察。</div></div>
 <div class="view-tools"><button class="icon-button" id="reset-view" title="重置视角（R）" aria-label="重置视角"><svg viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 8M3 4v6h6"/></svg></button><div class="divider"></div><button class="icon-button" id="zoom-in" title="拉近" aria-label="拉近"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button><button class="icon-button" id="zoom-out" title="拉远" aria-label="拉远"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><div class="divider"></div><button class="icon-button" id="fullscreen" title="全屏" aria-label="全屏"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg></button></div>
 <nav class="planet-dock" id="planet-dock" aria-label="选择行星"></nav>
 <aside class="drawer" id="planet-card" aria-label="行星资料" inert><div class="drawer-top"><span>PLANETARY ARCHIVE</span><button class="close" id="close-card" aria-label="关闭行星资料"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="planet-id" id="planet-id">03</div><h2 id="planet-name">地球</h2><div class="planet-english" id="planet-english">EARTH</div><div class="planet-type" id="planet-type">类地行星</div><p class="planet-summary" id="planet-summary"></p><dl class="planet-data" id="planet-data"></dl><details class="source-note"><summary>数据来源与口径</summary><p>直径为 JPL 赤道半径乘二，数值均为近似值；公转为恒星公转周期，按 1 年 = 365.25 地球日换算；自转周期为恒星自转周期，单位均以地球日、小时表示。逆行为与多数行星相反的自转方向。</p><p>卫星为 JPL 当前列出的正式认可数量，核对于 2026-09-12；新发现会改变数量。</p><a href="https://ssd.jpl.nasa.gov/planets/phys_par.html" target="_blank" rel="noopener noreferrer">JPL · 行星参数 ↗</a><br><a href="https://ssd.jpl.nasa.gov/sats/discovery.html" target="_blank" rel="noopener noreferrer">JPL · 卫星数量 ↗</a></details></aside>
@@ -170,7 +172,7 @@ function start(){
  function ensureScene(id){if(!scenes[id])scenes[id]=id==='galaxy'?makeGalaxy():makeBlackHole();}
  function setOrbitCamera(){camera.position.set(orbit.radius*Math.sin(orbit.phi)*Math.sin(orbit.theta),orbit.radius*Math.cos(orbit.phi),orbit.radius*Math.sin(orbit.phi)*Math.cos(orbit.theta)).add(orbit.target);camera.lookAt(orbit.target);camera.updateMatrixWorld();}
  function syncFly(){camera.rotation.order='YXZ';fly.yaw=camera.rotation.y;fly.pitch=camera.rotation.x;}
- function resetView(show=true){tour=null;updateTourUI();if(active==='solar'){orbit.theta=.27;orbit.phi=.69;orbit.radius=innerWidth<780?235:188;orbit.min=12;orbit.max=360;orbit.target.set(0,0,0);camera.fov=46;setOrbitCamera();}else if(active==='galaxy'){camera.fov=54;camera.position.set(0,99,96);camera.lookAt(0,0,0);syncFly();}else{camera.fov=46;orbit.theta=.1;orbit.phi=1.28;orbit.radius=innerWidth<780?42:32;orbit.min=15;orbit.max=90;orbit.target.set(0,0,0);setOrbitCamera();}camera.updateProjectionMatrix();if(show)toast('已回到初始观测位置');}
+ function resetView(show=true){endTour();if(active==='solar'){orbit.theta=.27;orbit.phi=.69;orbit.radius=innerWidth<780?235:188;orbit.min=12;orbit.max=360;orbit.target.set(0,0,0);camera.fov=46;setOrbitCamera();}else if(active==='galaxy'){camera.fov=54;camera.position.set(0,99,96);camera.lookAt(0,0,0);syncFly();}else{camera.fov=46;orbit.theta=.1;orbit.phi=1.28;orbit.radius=innerWidth<780?42:32;orbit.min=15;orbit.max=90;orbit.target.set(0,0,0);setOrbitCamera();}camera.updateProjectionMatrix();if(show)toast('已回到初始观测位置');}
  const sceneCopy={
  solar:{accent:'#d1b17b',rgb:'209,177,123',kicker:'01 / SOLAR SYSTEM',title:'太阳系',description:'一颗恒星，八个世界。<br>沿着引力的轨迹，探索我们的宇宙邻居。',facts:[['8','颗','行星'],['46','亿年','大约年龄'],['1','AU','日地平均距离']],caption:'<strong>点击一颗行星</strong>，读取它的故事。<br>距离与大小经过缩放，以便观察。',footer:'SOL · LOCAL SYSTEM'},
  galaxy:{accent:'#a6bafa',rgb:'166,186,250',kicker:'02 / MILKY WAY',title:'银河系',description:'无数星光，在旋臂中汇成河流。<br>离开太阳系，走进我们的星系。',facts:[['132,000','','渲染恒星'],['4','条','对数旋臂'],['10','万光年','盘面直径 · 约']],caption:'<strong>自由飞行</strong>，或跟随三段巡游。<br>程序化结构示意，非恒星位置星图。',footer:'MILKY WAY · SPIRAL GALAXY'},
@@ -181,23 +183,162 @@ function start(){
  function closeCard(restore=true){$('planet-card').classList.remove('open');$('planet-card').inert=true;document.body.classList.remove('drawer-open');document.querySelectorAll('.planet-choice').forEach(b=>b.classList.remove('active'));labels.forEach(b=>b.classList.remove('selected'));planetObjects.forEach(obj=>{obj.line.material.opacity=.22;obj.line.material.color.set(0x58718a);});if(restore&&selected>=0)document.querySelectorAll('.planet-choice')[selected].focus();selected=-1;}
  function setSpeed(value){speed=value;if(value>0)lastSpeed=value;document.querySelectorAll('[data-speed]').forEach(b=>{const on=Number(b.dataset.speed)===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on);});}
  function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2500);}
+ // The score is synthesized once in memory; the live context plays only one score at a time.
+ function createTourAudio(){
+  const preferenceKey='cosmos.tourMusic.muted.v1';
+  let muted=false,context=null,analyser=null,scorePromise=null,score=null,revision=0;
+  let failed=false,unavailable=false,warned=false,pageAway=false,lastOffset=0;
+  const voices=new Set(),meter=new Float32Array(256);
+  try{muted=localStorage.getItem(preferenceKey)==='true';}catch{/* file:// or private browsing may disallow storage. */}
+  const desired=()=>active==='galaxy'&&!!tour&&!muted&&!document.hidden&&!disposed&&!pageAway;
+  const progress=()=>tour?tourDurations.slice(0,tour.stage).reduce((sum,n)=>sum+n,0)+Math.min(tour.elapsed,tourDurations[tour.stage]):0;
+
+  function updateButton(){
+   const b=$('music-toggle');b.setAttribute('aria-pressed',String(!muted));b.disabled=unavailable;
+   b.querySelector('span').textContent=unavailable?'音乐不可用':failed?'重试音乐':muted?'已静音':'音乐开启';
+   b.setAttribute('aria-label',unavailable?'当前浏览器不支持巡游音乐':failed?'重试开启巡游音乐':muted?'巡游音乐已静音，点击开启':'巡游音乐已开启，点击静音');
+   b.title=unavailable?'当前浏览器不支持 Web Audio':failed?'点击重试，巡游动画不受影响':'仅在银河自动巡游期间播放，记住你的选择';
+  }
+  function createContext(){
+   if(context)return context;
+   const Audio=window.AudioContext||window.webkitAudioContext;
+   if(!Audio||!(window.OfflineAudioContext||window.webkitOfflineAudioContext)){unavailable=true;throw new Error('Web Audio unavailable');}
+   context=new Audio({latencyHint:'playback'});
+   analyser=context.createAnalyser();analyser.fftSize=256;analyser.connect(context.destination);
+   return context;
+  }
+  async function synthesizeScore(){
+   const Offline=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+   const sampleRate=44100,duration=25.5,offline=new Offline(2,Math.ceil(duration*sampleRate),sampleRate);
+   const mix=offline.createGain(),warmth=offline.createBiquadFilter(),compressor=offline.createDynamicsCompressor();
+   mix.gain.value=.82;warmth.type='lowpass';warmth.frequency.value=2800;warmth.Q.value=.3;
+   compressor.threshold.value=-19;compressor.knee.value=18;compressor.ratio.value=2;compressor.attack.value=.025;compressor.release.value=.3;
+   mix.connect(warmth);warmth.connect(compressor);compressor.connect(offline.destination);
+   const reverb=offline.createConvolver(),wet=offline.createGain(),impulse=offline.createBuffer(2,sampleRate*2.6,sampleRate);
+   let seed=731;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+   for(let channel=0;channel<2;channel++){const data=impulse.getChannelData(channel);for(let i=0;i<data.length;i++){const t=i/sampleRate;data[i]=t<.045?0:(rand()*2-1)*Math.pow(1-i/data.length,3.4)*.28;}}
+   reverb.buffer=impulse;wet.gain.value=.24;mix.connect(reverb);reverb.connect(wet);wet.connect(warmth);
+   const hz=midi=>440*Math.pow(2,(midi-69)/12);
+   function tone({midi,start,length,level,pan=0,type='sine',attack=1,release=1.5,detune=0,bell=false}){
+    const oscillator=offline.createOscillator(),envelope=offline.createGain(),panner=offline.createStereoPanner();
+    oscillator.type=type;oscillator.frequency.value=hz(midi);oscillator.detune.value=detune;panner.pan.value=pan;
+    const end=Math.min(duration-.02,start+length),rise=Math.min(start+attack,end-.05);
+    envelope.gain.setValueAtTime(0,start);envelope.gain.linearRampToValueAtTime(level,rise);
+    if(bell){envelope.gain.exponentialRampToValueAtTime(.00001,end-.025);}
+    else{envelope.gain.setValueAtTime(level,Math.max(rise,end-release));envelope.gain.linearRampToValueAtTime(0,end);}
+    envelope.gain.linearRampToValueAtTime(0,end);oscillator.connect(envelope);envelope.connect(panner);panner.connect(mix);
+    oscillator.start(start);oscillator.stop(end+.01);
+   }
+   // Cmaj7 → Am7 → Fmaj7 → Cadd9: gentle transitions at the three camera stages.
+   const chords=[{t:0,len:7,notes:[48,55,59,64]},{t:5,len:10,notes:[45,52,55,60]},{t:13,len:9,notes:[41,48,52,57]},{t:20,len:5.45,notes:[48,55,62,64]}];
+   chords.forEach(({t,len,notes})=>notes.forEach((midi,i)=>{
+    tone({midi,start:t,length:len,level:.034,pan:(i-1.5)*.36,attack:1.65,release:2.15,detune:i%2?3:-3});
+    tone({midi:midi+12,start:t+.035,length:len-.04,level:.007,pan:(1.5-i)*.3,attack:2,release:2.1,type:'triangle',detune:i%2?-4:4});
+   }));
+   const chimes=[[1.8,76],[4,79],[6.7,76],[9.4,72],[11.7,79],[14.6,77],[17.2,81],[19.5,76],[22,74],[23.4,76]];
+   chimes.forEach(([start,midi],i)=>{
+    const pan=Math.sin(i*2.4)*.55;
+    tone({midi,start,length:2.7,level:.055,pan,attack:.026,bell:true});
+    tone({midi:midi+12,start,length:1.45,level:.009,pan,attack:.016,bell:true,detune:2});
+   });
+   const rendered=await offline.startRendering();
+   let peak=0;for(let ch=0;ch<2;ch++){const data=rendered.getChannelData(ch);for(let i=0;i<data.length;i++)peak=Math.max(peak,Math.abs(data[i]));}
+   // Leave generous headroom. This also protects against implementation differences between browsers.
+   if(peak>.25){const scale=.25/peak;for(let ch=0;ch<2;ch++){const data=rendered.getChannelData(ch);for(let i=0;i<data.length;i++)data[i]*=scale;}}
+   return rendered;
+  }
+  function retire(voice,seconds){
+   if(!context)return;
+   const now=context.currentTime,end=Math.min(voice.stopAt??Infinity,now+seconds+.012);
+   const gain=voice.gain.gain;
+   if(typeof gain.cancelAndHoldAtTime==='function')gain.cancelAndHoldAtTime(now);
+   else{const value=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(value,now);}
+   if(seconds===0){gain.setValueAtTime(0,now);}else{gain.linearRampToValueAtTime(0,Math.max(now,end-.012));}
+   voice.retiring=true;voice.stopAt=end;
+   try{voice.node.stop(end);}catch{/* The source can finish while a UI event is being handled. */}
+   if(seconds===0){voice.node.disconnect();voice.gain.disconnect();voices.delete(voice);}
+  }
+  function stop(seconds=.3){revision++;voices.forEach(voice=>retire(voice,seconds));}
+  function warn(){if(!warned){toast(unavailable?'此浏览器暂不支持音乐，巡游仍可正常使用':'音乐暂未启动，可点击“重试音乐”；巡游不受影响');warned=true;}}
+  async function sync(){
+   const request=++revision;
+   if(!desired()){voices.forEach(voice=>retire(voice,muted?.08:.3));updateButton();return;}
+   try{
+    const ctx=createContext();
+    // resume() is called synchronously inside the click handler, before the score-rendering await.
+    const resume=ctx.state==='running'?Promise.resolve():ctx.resume();
+    if(!scorePromise)scorePromise=synthesizeScore().then(buffer=>(score=buffer)).catch(error=>{scorePromise=null;throw error;});
+    let timer;
+    const resumed=Promise.race([resume,new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Audio resume timed out')),2500);})]).finally(()=>clearTimeout(timer));
+    const [,buffer]=await Promise.all([resumed,scorePromise]);
+    if(request!==revision||!desired())return;
+    if(ctx.state!=='running')throw new Error('Audio is suspended');
+    // Any previous fade finishes before the replacement source starts, so rapid clicks cannot stack music.
+    voices.forEach(voice=>retire(voice,.025));
+    const delay=voices.size?.04:0,offset=Math.min(progress()+delay,buffer.duration-.02);
+    const node=ctx.createBufferSource(),gain=ctx.createGain(),when=ctx.currentTime+delay;
+    node.buffer=buffer;gain.gain.setValueAtTime(0,ctx.currentTime);gain.gain.setValueAtTime(0,when);gain.gain.linearRampToValueAtTime(1,when+.65);
+    node.connect(gain);gain.connect(analyser);
+    const voice={node,gain,offset,startedAt:when,retiring:false};voices.add(voice);
+    node.onended=()=>{node.disconnect();gain.disconnect();voices.delete(voice);};
+    lastOffset=offset;node.start(when,offset);failed=false;updateButton();
+   }catch(error){
+    if(request!==revision||!desired())return;
+    failed=true;stop(.08);updateButton();warn();
+   }
+  }
+  function toggle(){
+   if(failed&&!muted){failed=false;updateButton();void sync();return;}
+   muted=!muted;failed=false;
+   try{localStorage.setItem(preferenceKey,String(muted));}catch{/* Keep the current-page preference if storage is blocked. */}
+   updateButton();void sync();
+  }
+  function visibility(){
+   if(document.hidden||pageAway){stop(0);if(context&&context.state==='running')void context.suspend().catch(()=>{});}
+   else if(desired())void sync();
+  }
+  function leave(){pageAway=true;visibility();}
+  function returnToPage(){pageAway=false;visibility();}
+  function snapshot(){
+   let rms=0;if(analyser&&context.state==='running'){analyser.getFloatTimeDomainData(meter);for(const sample of meter)rms+=sample*sample;rms=Math.sqrt(rms/meter.length);}
+   const playing=[...voices].filter(voice=>!voice.retiring&&context.currentTime>=voice.startedAt);
+   return {muted,available:!unavailable,failed,contextState:context?.state??'not-created',bufferReady:!!score,activeSources:playing.length,retiringSources:voices.size-playing.length,rms,lastOffset,position:playing.length?playing[0].offset+context.currentTime-playing[0].startedAt:null};
+  }
+  updateButton();
+  return {sync,stop,toggle,visibility,leave,returnToPage,snapshot};
+ }
+ const tourAudio=createTourAudio();
+ function endTour(immediate=false){tour=null;tourAudio.stop(immediate?0:.3);syncFly();updateTourUI();}
+
  function updateTourUI(){const running=!!tour;$('tour-button').querySelector('span').textContent=running?'停止巡游 · 自由飞行':'开始星际巡游';document.querySelectorAll('[data-stage]').forEach(el=>el.classList.toggle('active',running&&Number(el.dataset.stage)===tour.stage));}
- function startTour(){if(tour){tour=null;syncFly();updateTourUI();return;}tour={elapsed:0,stage:0,startPos:camera.position.clone(),startQuat:camera.quaternion.clone()};keys.clear();updateTourUI();}
+ function startTour(){if(tour){endTour();return;}tour={elapsed:0,stage:0,startPos:camera.position.clone(),startQuat:camera.quaternion.clone()};keys.clear();updateTourUI();void tourAudio.sync();}
  function pose(position,target){const c=new THREE.PerspectiveCamera();c.position.copy(position);c.lookAt(target);return c.quaternion.clone();}
  const tourTop=new THREE.Vector3(0,137,.1),tourSide=new THREE.Vector3(0,7,116),armR=39,armAngle=2.15*Math.log(armR/5)+Math.PI/2;
  const tourArm=new THREE.Vector3(Math.cos(armAngle)*armR,1.8,Math.sin(armAngle)*armR),tourArmLook=new THREE.Vector3(Math.cos(armAngle+.18)*(armR+4),.4,Math.sin(armAngle+.18)*(armR+4));
  const tourPos=[tourTop,tourSide,tourArm],tourQuat=[pose(tourTop,new THREE.Vector3()),pose(tourSide,new THREE.Vector3()),pose(tourArm,tourArmLook)],tourDurations=[5,8,11];
- function animateTour(dt){if(!tour)return;tour.elapsed+=dt;const t=Math.min(tour.elapsed/tourDurations[tour.stage],1),e=t*t*(3-2*t);camera.position.lerpVectors(tour.startPos,tourPos[tour.stage],e);camera.quaternion.slerpQuaternions(tour.startQuat,tourQuat[tour.stage],e);if(t===1){if(tour.stage===2){tour=null;syncFly();updateTourUI();toast('巡游结束，继续自由探索');}else{tour.stage++;tour.elapsed=0;tour.startPos.copy(camera.position);tour.startQuat.copy(camera.quaternion);updateTourUI();}}}
- function stopTourOnInput(){if(tour){tour=null;syncFly();updateTourUI();}}
+ function animateTour(dt){
+  if(!tour)return;
+  // Music runs on real elapsed seconds. Keep visible camera time on the same clock,
+  // including any frame delay and the remainder when crossing one or more stages.
+  tour.elapsed+=dt;
+  while(tour.elapsed>=tourDurations[tour.stage]){
+   tour.elapsed-=tourDurations[tour.stage];camera.position.copy(tourPos[tour.stage]);camera.quaternion.copy(tourQuat[tour.stage]);
+   if(tour.stage===2){endTour();toast('巡游结束，继续自由探索');return;}
+   tour.stage++;tour.startPos.copy(camera.position);tour.startQuat.copy(camera.quaternion);updateTourUI();
+  }
+  const t=tour.elapsed/tourDurations[tour.stage],e=t*t*(3-2*t);
+  camera.position.lerpVectors(tour.startPos,tourPos[tour.stage],e);camera.quaternion.slerpQuaternions(tour.startQuat,tourQuat[tour.stage],e);
+ }
+ function stopTourOnInput(){if(tour)endTour();}
  function zoom(amount){if(active==='galaxy'){stopTourOnInput();camera.getWorldDirection(v);camera.position.addScaledVector(v,-amount*.024*fly.speed);}else{orbit.radius=THREE.MathUtils.clamp(orbit.radius*Math.exp(amount*.0012),orbit.min,orbit.max);setOrbitCamera();}}
- function showAbout(){previousFocus=document.activeElement;const text=active==='solar'?`<p>1x 下，1 秒推进约 12 个地球日。八颗行星按真实公转周期的比例运动：离太阳越近，公转越快。</p><p>行星尺寸与轨道间距采用展示比例；轨道简化为圆形。自转单独压缩时间以便看清纹理，保留逆行方向；月球公转采用 27.3217 日恒星周期。</p><p>资料中的自转是恒星自转周期，并非太阳日。木星、土星等没有固体表面，其自转采用约定的参考值。</p><a href="https://ssd.jpl.nasa.gov/planets/phys_par.html" target="_blank" rel="noopener noreferrer">JPL 行星资料 ↗</a> · <a href="https://ssd.jpl.nasa.gov/sats/discovery.html" target="_blank" rel="noopener noreferrer">JPL 卫星记录 ↗</a>`:active==='galaxy'?`<p>132,000 颗恒星通过 GPU Points 绘制。四条对数螺旋臂、中央核球和弥散盘共同组成这个银河系示意模型。</p><p>恒星颜色按约 3,000–30,000 K 的黑体色温生成，暗色粒子形成尘埃带。这是程序化模型，数量与位置不对应真实恒星目录。</p><p>拖拽环顾，W / S 前后、A / D 左右，Q / E 降低与升高，Shift 加速。滚轮也可前后移动。巡游依次经过俯瞰、侧视和旋臂内部；手动操作会接管相机。</p>`:`<p>背景星空先绘制为一张 GPU 纹理，再用屏幕空间径向映射表现引力弯折与光子环。旋转视角时，背景星光会沿新的方向弯曲。</p><p>吸积盘有真实三维厚度，内薄外厚；盘面纹理按半径差速旋转。多普勒亮度由气流速度与观察方向的夹角计算：朝观察者运动的盘面一侧更亮。</p><p>这是供探索的实时视觉近似，未求解广义相对论光线轨迹，也未模拟吸积盘的多重像，不用于科研计算。</p>`;$('about-content').innerHTML=text;$('about-dialog').hidden=false;keys.clear();$('close-about').focus();}
+ function showAbout(){previousFocus=document.activeElement;const text=active==='solar'?`<p>1x 下，1 秒推进约 12 个地球日。八颗行星按真实公转周期的比例运动：离太阳越近，公转越快。</p><p>行星尺寸与轨道间距采用展示比例；轨道简化为圆形。自转单独压缩时间以便看清纹理，保留逆行方向；月球公转采用 27.3217 日恒星周期。</p><p>资料中的自转是恒星自转周期，并非太阳日。木星、土星等没有固体表面，其自转采用约定的参考值。</p><a href="https://ssd.jpl.nasa.gov/planets/phys_par.html" target="_blank" rel="noopener noreferrer">JPL 行星资料 ↗</a> · <a href="https://ssd.jpl.nasa.gov/sats/discovery.html" target="_blank" rel="noopener noreferrer">JPL 卫星记录 ↗</a>`:active==='galaxy'?`<p>132,000 颗恒星通过 GPU Points 绘制。四条对数螺旋臂、中央核球和弥散盘共同组成这个银河系示意模型。</p><p>恒星颜色按约 3,000–30,000 K 的黑体色温生成，暗色粒子形成尘埃带。这是程序化模型，数量与位置不对应真实恒星目录。</p><p>拖拽环顾，W / S 前后、A / D 左右，Q / E 降低与升高，Shift 加速。滚轮也可前后移动。巡游依次经过俯瞰、侧视和旋臂内部；手动操作会接管相机。</p><p>巡游时播放内嵌合成的太空氛围音乐，可点击“音乐开启／已静音”切换并记住选择。停止巡游或切换场景时音乐淡出；页面隐藏时暂停，返回后从当前巡游进度恢复。顶部时间倍速不影响相机巡游与配乐。</p>`:`<p>背景星空先绘制为一张 GPU 纹理，再用屏幕空间径向映射表现引力弯折与光子环。旋转视角时，背景星光会沿新的方向弯曲。</p><p>吸积盘有真实三维厚度，内薄外厚；盘面纹理按半径差速旋转。多普勒亮度由气流速度与观察方向的夹角计算：朝观察者运动的盘面一侧更亮。</p><p>这是供探索的实时视觉近似，未求解广义相对论光线轨迹，也未模拟吸积盘的多重像，不用于科研计算。</p>`;$('about-content').innerHTML=text;$('about-dialog').hidden=false;keys.clear();$('close-about').focus();}
  function closeAbout(){if(!$('about-dialog').hidden){$('about-dialog').hidden=true;if(previousFocus?.isConnected)previousFocus.focus();}}
  document.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>setScene(b.dataset.scene)));
  document.querySelectorAll('[data-speed]').forEach(b=>b.addEventListener('click',()=>setSpeed(Number(b.dataset.speed))));
  document.querySelector('.tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;const tabs=[...document.querySelectorAll('[data-scene]')];let i=tabs.indexOf(document.activeElement);if(i<0)return;e.preventDefault();i=e.key==='Home'?0:e.key==='End'?2:(i+(e.key==='ArrowRight'?1:2))%3;tabs[i].focus();setScene(tabs[i].dataset.scene);});
  $('orbits').addEventListener('change',()=>{scenes.solar.orbitGroup.visible=$('orbits').checked;planetObjects[2].anchor.userData.moonPath.visible=$('orbits').checked;});
  $('show-labels').addEventListener('change',()=>{$('labels').hidden=!$('show-labels').checked;});
- $('close-card').addEventListener('click',()=>closeCard());$('reset-view').addEventListener('click',()=>resetView());$('zoom-in').addEventListener('click',()=>zoom(-140));$('zoom-out').addEventListener('click',()=>zoom(140));$('tour-button').addEventListener('click',startTour);$('about-button').addEventListener('click',showAbout);$('close-about').addEventListener('click',closeAbout);$('about-dialog').addEventListener('click',e=>{if(e.target===$('about-dialog'))closeAbout();});
+ $('close-card').addEventListener('click',()=>closeCard());$('reset-view').addEventListener('click',()=>resetView());$('zoom-in').addEventListener('click',()=>zoom(-140));$('zoom-out').addEventListener('click',()=>zoom(140));$('tour-button').addEventListener('click',startTour);$('music-toggle').addEventListener('click',tourAudio.toggle);$('about-button').addEventListener('click',showAbout);$('close-about').addEventListener('click',closeAbout);$('about-dialog').addEventListener('click',e=>{if(e.target===$('about-dialog'))closeAbout();});
  $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{toast('当前浏览器不支持此全屏操作，可尝试 F11');}});
  canvas.addEventListener('pointerdown',e=>{canvas.focus({preventScroll:true});stopTourOnInput();pointerStart={x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,moved:false,id:e.pointerId};canvas.setPointerCapture(e.pointerId);});
  canvas.addEventListener('pointermove',e=>{if(!pointerStart||e.pointerId!==pointerStart.id)return;const dx=e.clientX-pointerStart.lastX,dy=e.clientY-pointerStart.lastY;pointerStart.lastX=e.clientX;pointerStart.lastY=e.clientY;if(Math.hypot(e.clientX-pointerStart.x,e.clientY-pointerStart.y)>5)pointerStart.moved=true;if(active==='galaxy'){fly.yaw-=dx*.004;fly.pitch=THREE.MathUtils.clamp(fly.pitch-dy*.004,-Math.PI/2+.015,Math.PI/2-.015);camera.rotation.set(fly.pitch,fly.yaw,0,'YXZ');}else{orbit.theta-=dx*.005;orbit.phi=THREE.MathUtils.clamp(orbit.phi-dy*.005,.06,Math.PI-.06);setOrbitCamera();}});
@@ -205,21 +346,22 @@ function start(){
  canvas.addEventListener('pointerup',e=>{if(pointerStart&&!pointerStart.moved&&active==='solar'){const rect=canvas.getBoundingClientRect();mouse.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);raycaster.setFromCamera(mouse,camera);const hit=raycaster.intersectObjects(pickables,false)[0];if(hit)selectPlanet(hit.object.userData.planet);else{let nearest=-1,dist=18;planetObjects.forEach((o,i)=>{v.copy(o.anchor.position).project(camera);if(v.z<1&&v.z>-1){let d=Math.hypot((v.x*.5+.5)*rect.width-(e.clientX-rect.left),(-v.y*.5+.5)*rect.height-(e.clientY-rect.top));if(d<dist){nearest=i;dist=d;}}});if(nearest>=0)selectPlanet(nearest);}}pointerStart=null;});
  canvas.addEventListener('pointercancel',()=>pointerStart=null);canvas.addEventListener('lostpointercapture',()=>pointerStart=null);canvas.addEventListener('wheel',e=>{e.preventDefault();zoom(THREE.MathUtils.clamp(e.deltaY,-200,200));},{passive:false});canvas.addEventListener('contextmenu',e=>e.preventDefault());
  window.addEventListener('keydown',e=>{if(!$('about-dialog').hidden){if(e.code==='Escape')closeAbout();if(e.code==='Tab'){const focusables=[...$('about-dialog').querySelectorAll('button,a')],first=focusables[0],last=focusables.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}return;}if(e.code==='Escape'){if(selected>=0)closeCard();stopTourOnInput();}if(e.target.matches('input,textarea,select'))return;if(e.code==='Space'&&(e.target===canvas||e.target===document.body)){e.preventDefault();if(!e.repeat)setSpeed(speed===0?lastSpeed:0);}if(e.code==='KeyR'&&!e.repeat)resetView();if(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ShiftLeft','ShiftRight'].includes(e.code)){keys.add(e.code);if(active==='galaxy'){e.preventDefault();stopTourOnInput();}}});
- window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>{keys.clear();pointerStart=null;});document.addEventListener('visibilitychange',()=>{keys.clear();clock.getDelta();statsFrames=0;statsElapsed=0;qualityWait=performance.now()+5000;});
- canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();disposed=true;fail('WebGL 绘图上下文已中断。关闭占用 GPU 的应用后，点击重新连接。');});
+ window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>{keys.clear();pointerStart=null;});document.addEventListener('visibilitychange',()=>{keys.clear();clock.getDelta();statsFrames=0;statsElapsed=0;qualityWait=performance.now()+5000;tourAudio.visibility();});
+ window.addEventListener('pagehide',tourAudio.leave);window.addEventListener('pageshow',tourAudio.returnToPage);
+ canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();disposed=true;endTour(true);fail('WebGL 绘图上下文已中断。关闭占用 GPU 的应用后，点击重新连接。');});
  function resize(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setPixelRatio(pixelRatio*renderScale);renderer.setSize(w,h,false);pointMaterials.forEach(m=>m.uniforms.uRatio.value=pixelRatio*renderScale);if(scenes.blackhole){const b=scenes.blackhole;b.rt.setSize(Math.max(1,Math.round(w*pixelRatio*renderScale)),Math.max(1,Math.round(h*pixelRatio*renderScale)));b.lens.uniforms.uAspect.value=w/h;}$('resolution').textContent=`${renderer.domElement.width} × ${renderer.domElement.height}`;}
  window.addEventListener('resize',resize);
  function updateSolar(dt){const solar=scenes.solar;solar.sun.material.uniforms.uTime.value=simTime;solar.sun.rotation.y=simTime*.03;for(let i=0;i<planetObjects.length;i++){const o=planetObjects[i],p=o.data,angle=p.phase-simulationDays/p.year*TAU;o.anchor.position.set(Math.cos(angle)*p.orbit,0,Math.sin(angle)*p.orbit);o.mesh.rotation.y+=(p.retro?-1:1)*dt*speed*.32/Math.pow(p.day,.35);if(i===2){const ma=-simulationDays/27.3217*TAU;o.anchor.userData.moon.position.set(Math.cos(ma)*2.6,Math.sin(ma)*.24,Math.sin(ma)*2.6);o.anchor.userData.moon.rotation.y=-ma;}}
   if(!solar.orbitGroup.visible&&planetObjects[2].anchor.userData.moonPath.visible)planetObjects[2].anchor.userData.moonPath.visible=false;
   if(frameNo%2===0&&!$('labels').hidden){camera.updateMatrixWorld();for(let i=0;i<planetObjects.length;i++){const o=planetObjects[i];v.copy(o.anchor.position);v.y+=o.data.radius+.1;v.project(camera);const x=(v.x*.5+.5)*innerWidth,y=(-v.y*.5+.5)*innerHeight;const visible=v.z>-1&&v.z<1&&x>0&&x<innerWidth-40&&y>95&&y<innerHeight-145;labels[i].style.display=visible?'flex':'none';if(visible)labels[i].style.transform=`translate(${x+10}px,${y-10}px)`;}v.set(0,-5,0).project(camera);solar.sunLabel.style.transform=`translate(${(v.x*.5+.5)*innerWidth-35}px,${(-v.y*.5+.5)*innerHeight}px)`;solar.sunLabel.style.display=v.z<1&&v.z>-1?'block':'none';}}
- function updateFly(dt){if(tour){animateTour(dt);return;}let x=(keys.has('KeyD')?1:0)-(keys.has('KeyA')?1:0),z=(keys.has('KeyW')?1:0)-(keys.has('KeyS')?1:0),y=(keys.has('KeyE')?1:0)-(keys.has('KeyQ')?1:0);if(!(x||y||z))return;const step=dt*fly.speed*(keys.has('ShiftLeft')||keys.has('ShiftRight')?4:1);camera.getWorldDirection(v);v2.set(1,0,0).applyQuaternion(camera.quaternion);v3.copy(v).multiplyScalar(z).addScaledVector(v2,x);v3.y+=y;v3.normalize();camera.position.addScaledVector(v3,step);if(camera.position.length()>1200)camera.position.setLength(1200);}
+ function updateFly(dt,tourDt){if(tour){animateTour(tourDt);return;}let x=(keys.has('KeyD')?1:0)-(keys.has('KeyA')?1:0),z=(keys.has('KeyW')?1:0)-(keys.has('KeyS')?1:0),y=(keys.has('KeyE')?1:0)-(keys.has('KeyQ')?1:0);if(!(x||y||z))return;const step=dt*fly.speed*(keys.has('ShiftLeft')||keys.has('ShiftRight')?4:1);camera.getWorldDirection(v);v2.set(1,0,0).applyQuaternion(camera.quaternion);v3.copy(v).multiplyScalar(z).addScaledVector(v2,x);v3.y+=y;v3.normalize();camera.position.addScaledVector(v3,step);if(camera.position.length()>1200)camera.position.setLength(1200);}
  function renderBlackHole(){const b=scenes.blackhole;b.disk.material.uniforms.uTime.value=simTime;renderer.setRenderTarget(b.rt);renderer.clear();renderer.render(b.sky,camera);renderer.setRenderTarget(null);v.set(0,0,0).project(camera);b.lens.uniforms.uCenter.value.set(v.x*.5+.5,v.y*.5+.5);b.lens.uniforms.uRadius.value=2.57/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2)*Math.sqrt(camera.position.lengthSq()-2.57*2.57));renderer.clear();renderer.render(b.postScene,b.postCamera);renderer.autoClear=false;renderer.clearDepth();renderer.render(b.scene,camera);renderer.render(b.ringScene,b.postCamera);renderer.autoClear=true;}
  let statsFrames=0,statsElapsed=0,lastFPS=0,perfHistory=[],slowWindows=0,fastWindows=0;
- function animate(){if(disposed)return;requestAnimationFrame(animate);if(document.hidden){clock.getDelta();return;}const rawDt=clock.getDelta(),dt=Math.min(rawDt,.06);frameNo++;simulationDays+=dt*speed*12;simTime+=dt*speed;renderer.info.reset();if(active==='solar'){updateSolar(dt);renderer.render(scenes.solar.scene,camera);}else if(active==='galaxy'){updateFly(dt);renderer.render(scenes.galaxy.scene,camera);}else renderBlackHole();statsFrames++;statsElapsed+=rawDt;
+ function animate(){if(disposed)return;requestAnimationFrame(animate);if(document.hidden){clock.getDelta();return;}const rawDt=clock.getDelta(),dt=Math.min(rawDt,.06);frameNo++;simulationDays+=dt*speed*12;simTime+=dt*speed;renderer.info.reset();if(active==='solar'){updateSolar(dt);renderer.render(scenes.solar.scene,camera);}else if(active==='galaxy'){updateFly(dt,rawDt);renderer.render(scenes.galaxy.scene,camera);}else renderBlackHole();statsFrames++;statsElapsed+=rawDt;
   if(statsElapsed>=1){lastFPS=statsFrames/statsElapsed;$('fps').textContent=Math.round(lastFPS)+' FPS';const target=active==='blackhole'?24:30;$('fps').style.color=lastFPS>=target?'#b4c8bb':'#d6ab79';$('fps-dot').style.background=lastFPS>=target?'#82a995':'#d6ab79';perfHistory.push({scene:active,fps:+lastFPS.toFixed(1),width:canvas.width,height:canvas.height,time:performance.now()});if(perfHistory.length>180)perfHistory.shift();if(performance.now()>qualityWait){slowWindows=lastFPS<target+2?slowWindows+1:0;fastWindows=lastFPS>55?fastWindows+1:0;if(slowWindows>=3&&renderScale>.6){renderScale=Math.max(.6,renderScale-.1);resize();qualityWait=performance.now()+5000;slowWindows=0;}else if(fastWindows>=10&&renderScale<1){renderScale=Math.min(1,renderScale+.1);resize();qualityWait=performance.now()+5000;fastWindows=0;}}statsFrames=0;statsElapsed=0;}
  }
  // Read-only diagnostics allow reproducible local acceptance without adding a second deliverable.
- window.__cosmos={get state(){return {active,speed,simTime,simulationDays,selected,tourStage:tour?.stage??null,starCount:scenes.galaxy?.count??0,fps:lastFPS,renderScale,pixelRatio,drawCalls:renderer.info.render.calls,points:renderer.info.render.points,triangles:renderer.info.render.triangles,camera:camera.position.toArray(),rotation:camera.quaternion.toArray(),orbits:scenes.solar.orbitGroup.visible,planetPositions:planetObjects.map(o=>o.anchor.position.toArray()),planetRotations:planetObjects.map(o=>o.mesh.rotation.y),renderSize:[canvas.width,canvas.height],history:perfHistory.slice()};},get planetData(){return planets.map(({name,diameter,period,rotation,moons,year,retro})=>({name,diameter,period,rotation,moons,year,retro:!!retro}));}};
+ window.__cosmos={get state(){return {active,speed,simTime,simulationDays,selected,tourStage:tour?.stage??null,tourElapsed:tour?.elapsed??0,audio:tourAudio.snapshot(),starCount:scenes.galaxy?.count??0,fps:lastFPS,renderScale,pixelRatio,drawCalls:renderer.info.render.calls,points:renderer.info.render.points,triangles:renderer.info.render.triangles,camera:camera.position.toArray(),rotation:camera.quaternion.toArray(),orbits:scenes.solar.orbitGroup.visible,planetPositions:planetObjects.map(o=>o.anchor.position.toArray()),planetRotations:planetObjects.map(o=>o.mesh.rotation.y),renderSize:[canvas.width,canvas.height],history:perfHistory.slice()};},get planetData(){return planets.map(({name,diameter,period,rotation,moons,year,retro})=>({name,diameter,period,rotation,moons,year,retro:!!retro}));}};
  resetView(false);resize();updateSolar(0);renderer.compile(scenes.solar.scene,camera);animate();clearTimeout(timeout);$('loading').classList.add('fade');setTimeout(()=>$('loading').hidden=true,700);
 }
 </script>
